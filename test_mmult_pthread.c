@@ -7,7 +7,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <errno.h>
-#include "matrix_pthread.h"
+#include "matrix.h"
+#include "multiply_pthread.h"
 
 int main()
 {

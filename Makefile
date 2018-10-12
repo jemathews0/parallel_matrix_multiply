@@ -8,8 +8,8 @@ debug: all
 sequential : mmult_sequential.c
 	gcc $(CFLAGS) -o sequential mmult_sequential.c
 	
-pthread : mmult_pthread.c
-	gcc $(CFLAGS) -o pthread mmult_pthread.c matrix_pthread.c -lpthread
+pthread : test_mmult_pthread.c
+	gcc $(CFLAGS) -o pthread test_mmult_pthread.c matrix.c multiply_pthread.c -lpthread
 
 openmp : mmult_openmp.c
 	gcc $(CFLAGS) -o openmp mmult_openmp.c -fopenmp

@@ -1,18 +1,14 @@
-#ifndef _MATRIX_PTHREAD_H
-#define _MATRIX_PTHREAD_H
+#ifndef _MULTIPLY_PTHREAD_H
+#define _MULTIPLY_PTHREAD_H
 
 #include <pthread.h>
+#include "matrix.h"
 
 /********************************************************************
- * A struct to hold a rectangular matrix of doubles. Must be 
- * initialized by calling matrixCreate( rows, cols);
+ * Global Constants
  *******************************************************************/
-typedef struct 
-{
-    unsigned int rows;
-    unsigned int cols;
-    double data[];
-} Matrix;
+
+#define T 8
 
 /********************************************************************
  * A struct to pass all information a matrix multiplication thread 
@@ -28,10 +24,7 @@ typedef struct
     pthread_mutex_t* mutex; // A mutex to protect the index
 } MatrixMultiplyStruct;
 
-Matrix * matrixCreate( unsigned rows, unsigned cols);
-void matrixFree( Matrix * mat );
-void matrixPrint( Matrix* mat);
-void * matrixThreadStart( void * param);
+void * matrixMultiplyThreadStart( void * param);
 Matrix* matrixMultiply( Matrix* A, Matrix* B);
 
 #endif
