@@ -129,7 +129,6 @@ void * matrixThreadStart( void * param)
     }
 
     return (void*) 0;
-	
 }
 
 /********************************************************************
@@ -152,23 +151,23 @@ Matrix* matrixMultiply( Matrix* A, Matrix* B)
     unsigned index = 0; // the next position to be filled in the result
     pthread_mutex_t mutex; // a mutex to protect the global index
 
-	// initialize the mutex
-	int retval = pthread_mutex_init( &mutex, NULL);
-	if( retval != 0)
-	{
-		printf("Error: Couldn't initialize mutex\n");
-		return (void*)0;
-	}
+    // initialize the mutex
+    int retval = pthread_mutex_init( &mutex, NULL);
+    if( retval != 0)
+    {
+        printf("Error: Couldn't initialize mutex\n");
+        return (void*)0;
+    }
 
     // create an array of thread parameter structs
     MatrixMultiplyStruct mStructs[T];
     
-	// create an array of thread ids
-	pthread_t tids[T];
+    // create an array of thread ids
+    pthread_t tids[T];
 
-	// initialize the thread parameters and create the threads
-	for(unsigned i = 0; i < T; i++ )
-	{
+    // initialize the thread parameters and create the threads
+    for(unsigned i = 0; i < T; i++ )
+    {
         mStructs[i].A = A;
         mStructs[i].B = B;
         mStructs[i].C = C;
@@ -176,15 +175,15 @@ Matrix* matrixMultiply( Matrix* A, Matrix* B)
         mStructs[i].mutex = &mutex;
         mStructs[i].tid = i;
         //printf("Creating thread %u\n", i);
-		pthread_create( &(tids[i]), NULL, matrixThreadStart, (void*)&(mStructs[i]));
-	}
+        pthread_create( &(tids[i]), NULL, matrixThreadStart, (void*)&(mStructs[i]));
+    }
 
-	// join all the threads back in
-	for(unsigned i = 0; i < T; i++)
-	{
+    // join all the threads back in
+    for(unsigned i = 0; i < T; i++)
+    {
         //printf("Joining thread %u\n", i);
-		pthread_join(tids[i], NULL);
-	}
+        pthread_join(tids[i], NULL);
+    }
 
 #ifdef DEBUG
     printf("\n");
