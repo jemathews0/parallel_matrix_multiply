@@ -25,6 +25,7 @@ usage:
 ex: ./sequential 200
 
 Saves results from results matrix to a file: results.txt (THIS FILE IS OVERWRITTEN EVERYTIME exe is run).
+
 Displaying to stdout is time consuming, this speeds up the process.
 comment out the displayMatrix() function call to turn off displaying to the console.
 
