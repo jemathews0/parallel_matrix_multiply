@@ -1,13 +1,18 @@
+CFLAGS = -Wall -Werror -Wextra
+
 all: sequential pthread openmp
 
+debug: CFLAGS += -DDEBUG -g
+debug: all
+
 sequential : mmult_sequential.c
-	gcc -o sequential mmult_sequential.c
+	gcc $(CFLAGS) -o sequential mmult_sequential.c
 	
-pthread : mmult_pthread.c
-	gcc -o pthread mmult_pthread.c -lpthread
+pthread : test_mmult_pthread.c
+	gcc $(CFLAGS) -o pthread test_mmult_pthread.c matrix.c multiply_pthread.c -lpthread
 
 openmp : mmult_openmp.c
-	gcc -o openmp mmult_openmp.c -fopenmp
+	gcc $(CFLAGS) -o openmp mmult_openmp.c -fopenmp
 
 clean : 
 	rm sequential pthread openmp
