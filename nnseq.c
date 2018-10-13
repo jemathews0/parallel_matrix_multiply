@@ -2,11 +2,10 @@
 //  nnseq.c
 //  
 //
-//  Created by Landon on 10/11/18.
+//  Created by CSC410 Group with members Landon F., Erick V., Johnathan M., Lee Ann, Matt and Paul B.
 //
 //
 
-//NOTE: Not finished, still in development by Landon Frederes
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,7 +41,7 @@ void neighbor()
     
     int temp;
     
-    
+    //perform neighbor calculations
     for(i=0;i<SIZE;++i){
         for(j=0; j<SIZE; ++j){
             //reset temp
@@ -85,8 +84,10 @@ void neighbor()
 //debug print
 //printf("%d\n", temp);
             
+            //makes sure the rest of the conditions are skipped if a match is made.
             int flag = -1;
             
+            //store correct neighbor result in second matrix
             if ((flag==-1)&&(temp % 10==0)) {
                 matrixB[i][j]=0;
                 flag = 1;
@@ -138,7 +139,11 @@ void neighbor()
 int main()
 {
     //sequentially solve the neighbor problem.
+    
+    //populate arrays.
     populate();
+    
+    //perform matrix neighbor math.
     neighbor();
 
     return 0;
