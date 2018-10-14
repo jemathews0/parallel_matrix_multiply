@@ -13,7 +13,7 @@
 
 int SIZE = 5;
 int matrixA[5][5] = {0};
-int matrixB[5][5] = {-1};
+int matrixB[5][5] = {0};
 
 void populate();
 void neighbor();
@@ -26,7 +26,7 @@ void populate()
     //assign random values to the matrix
     for(i=0;i<SIZE;++i){
         for(j=0; j<SIZE; ++j){
-            matrixA[i][j] = rand() % 51;
+            matrixA[i][j] = rand() % 5;
         }
     }
 }
@@ -37,7 +37,6 @@ void neighbor()
     
     int i = 0;
     int j = 0;
-    int k = 0;
     
     int temp;
     
@@ -54,7 +53,7 @@ void neighbor()
                 temp = temp+matrixA[i-1][j];
             }
             //bottom
-            if (i+1<=SIZE) {
+            if (i+1<SIZE) {
                 temp = temp+matrixA[i+1][j];
             }
             //left
@@ -62,11 +61,11 @@ void neighbor()
                 temp = temp+matrixA[i][j-1];
             }
             //right
-            if (j+1<=SIZE) {
+            if (j+1<SIZE) {
                 temp = temp+matrixA[i][j+1];
             }
             //diagTopR
-            if ((i-1>=0)&&(j+1<=SIZE)) {
+            if ((i-1>=0)&&(j+1<SIZE)) {
                 temp = temp+matrixA[i-1][j+1];
             }
             //diagTopL
@@ -74,11 +73,11 @@ void neighbor()
                 temp = temp+matrixA[i-1][j-1];
             }
             //diagBottomR
-            if ((i+1<=SIZE)&&(j+1<=SIZE)) {
+            if ((i+1<SIZE)&&(j+1<SIZE)) {
                 temp = temp+matrixA[i+1][j+1];
             }
             //diagBottomL
-            if ((i+1<=SIZE)&&(j-1>=0)) {
+            if ((i+1<SIZE)&&(j-1>=0)) {
                 temp = temp+matrixA[i+1][j-1];
             }
 //debug print

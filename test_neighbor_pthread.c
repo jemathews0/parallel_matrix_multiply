@@ -8,7 +8,7 @@
 #include <time.h>
 #include <errno.h>
 #include "matrix.h"
-#include "multiply_pthread.h"
+#include "neighbor_pthread.h"
 
 int main()
 {
@@ -16,35 +16,27 @@ int main()
     // create a matrix, A, mxn
     const unsigned int m = 4;
     const unsigned int n = 3;
-    const unsigned int p = 2;
 
     Matrix* A = matrixCreate(m,n);
-    Matrix* B = matrixCreate(n,p);
-    Matrix* C;
+    Matrix* B;
 
     // initialize the matrix A
-    matrixRandomizeInt(A, 10);
-
-    // initialize the matrix B
-    matrixRandomizeInt(B, 10);
+    matrixRandomizeInt(A, 11);
 
     // print the operands
     printf("A:\n");
     matrixPrint(A);
-    printf("B:\n");
-    matrixPrint(B);
 
-    // multiply the operands
-    C = matrixMultiply(A,B);
+    // run the neighbor algorithm on A
+    B = neighbor(A);
 
     // print the result
-    printf("C = A*B =\n");
-    matrixPrint(C);
+    printf("B = neighbor(A) = \n");
+    matrixPrint(B);
 
     // free the matrices
     matrixFree(A);
     matrixFree(B);
-    matrixFree(C);
 
     return 0;
 }
