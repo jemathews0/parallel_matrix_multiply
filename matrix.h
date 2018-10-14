@@ -14,6 +14,10 @@ typedef struct
 
 
 Matrix * matrixCreate( unsigned rows, unsigned cols);
+void matrixInit( Matrix * mat, double val);
+void matrixRandomize( Matrix * mat, unsigned max);
+void matrixRandomizeInt( Matrix * mat, unsigned max);
+int matrixScale( Matrix * mat, double scalar);
 void matrixFree( Matrix * mat );
 void matrixPrint( Matrix* mat);
 

@@ -23,24 +23,10 @@ int main()
     Matrix* C;
 
     // initialize the matrix A
-    for( unsigned i = 0; i < m; i++ )
-    {
-        for( unsigned j = 0; j < n; j++ )
-        {
-            // get a random number on interval [0,10)
-            A->data[i*A->cols+j] = (int)(rand()*10.0/RAND_MAX);
-        }
-    }
+    matrixRandomizeInt(A, 10);
 
     // initialize the matrix B
-    for( unsigned i = 0; i < n; i++ )
-    {
-        for( unsigned j = 0; j < p; j++ )
-        {
-            // get a random number on interval [0,10)
-            B->data[i*B->cols+j] = (int)(rand()*10.0/RAND_MAX);
-        }
-    }
+    matrixRandomizeInt(B, 10);
 
     // print the operands
     printf("A:\n");
