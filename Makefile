@@ -1,6 +1,6 @@
 CFLAGS = -Wall -Wextra
 
-all: mmult_sequential mmult_pthread mmult_openmp nn_sequential nn_pthread nn_openmp
+all: mmult_sequential mmult_pthread mmult_openmp nn_sequential nn_pthread
 
 debug: CFLAGS += -DDEBUG -g
 debug: all
@@ -17,11 +17,8 @@ mmult_openmp : mmult_openmp.c
 nn_sequential : nnseq.c
 	gcc $(CFLAGS) -o nn_sequential nnseq.c
 	
-nn_pthread : test_nn_pthread.c
-	gcc $(CFLAGS) -o nn_pthread test_nn_pthread.c matrix.c multiply_pthread.c -lpthread
-
-nn_openmp : nn_openmp.c
-	gcc $(CFLAGS) -o nn_openmp nn_openmp.c -fopenmp
+nn_pthread : test_neighbor_pthread.c
+	gcc $(CFLAGS) -o nn_pthread test_neighbor_pthread.c matrix.c neighbor_pthread.c -lpthread
 
 clean : 
-	rm mmult_sequential mmult_pthread mmult_openmp nn_sequential
+	rm mmult_sequential mmult_pthread mmult_openmp nn_sequential nn_pthread
