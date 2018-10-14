@@ -1,0 +1,145 @@
+Write up for each group member as requested by instructor. If possible add the output or results for your tests as well. 
+
+Member: Erick Ventura
+
+Sequential Matrix Multiplication write up:
+
+Writing the sequential version of the Matrix multiplication was, as expected, easier than writing the pthreads parallel version. The ease of writing came at cost of speed though since matrices sizes 2 up to 4000 took between 11 seconds up to 25 minutes to complete. Sizes bigger than 5,000 took anywhere from an hour and beyond. I stopped testing anything larger than 5,000 rows*columns.
+On the other hand, I ran tests on the pthreads version of the program (implemented by Jonathan Mathews) and it performed a lot better for the same range of sizes (2 - 5k columns * rows). The pthreads version was able to run calculations up to 5K rows* columns in under 12 minutes. 
+
+While I contributed the sequential version for the group, I implemented the pthreads version on my own and found that it required a lot more overhead to fine-tune the distribution of work and minimize the shared data sections (use of mutex, barriers, etc.).  While openMP is easier to implement I find pthreads more fun since I’m able to break up the program in a more granular manner and attempt to minimize critical sections (I guess makes it more fun). Although I’m sure in a larger scale program I would probably go for the easier method to implement parallelism (openMP).
+Implemented the sequential version of the neighbor problem as well, main gotcha was properly handling the edges.
+
+Lessons learned: 
+First time using git/github in a group setting, learning how to create branches, PRs, etc. programming in a group was more fun than I anticipated (first time doing it). It allowed me to finally understand there are multiple ways to accomplish the same task and learn from other programmers' coding styles, appreciate other programmers' more efficient and/or more elegant approaches and solutions. Being able to work on a problem in a team environment, working on a solution with varying degrees of expertise, etc. (Cons: It takes a few tries to get logistics going.)
+
+
+Testing:
+Cloned the repo and ran different input tests on Matrix sequential & pthreads, as well as Neighbor sequential and pthreads implementations. Input sizes ranged from 1k up to 100,000 row*column matrices. Not all inputs completed (see a few of the results below). 
+
+Results: 
+
+Matrix Multiplication: 
+	Sequential:
+timing sequential MM
+Size of matrix: 1000created array
+created array
+created array
+matrix A:
+matrix B:
+matrix C:
+Multiplying matrices AXB = C:
+********************************
+Multiplying array of size: 1000Displaying C:
+********************************
+********************************
+freeing up memory...
+done
+real    0m17.335s
+user    0m17.316s
+sys     0m0.004s
+Size of matrix: 2000created array
+created array
+created array
+matrix A:
+matrix B:
+matrix C:
+Multiplying matrices AXB = C:
+********************************
+Multiplying array of size: 2000Displaying C:
+********************************
+********************************
+freeing up memory...
+done
+real    2m33.379s
+user    2m33.212s
+sys     0m0.052s
+Size of matrix: 3000created array
+created array
+created array
+matrix A:
+matrix B:
+matrix C:
+Multiplying matrices AXB = C:
+********************************
+Multiplying array of size: 3000Displaying C:
+********************************
+********************************
+freeing up memory...
+done
+real    10m12.398s
+user    10m11.920s
+sys     0m0.100s
+
+Size of matrix: 5000created array
+created array
+created array
+matrix A:
+matrix B:
+matrix C:
+Multiplying matrices AXB = C:
+Stopped here since it took a long time to get anywhere.
+
+	Pthreads performed better for sizes 1000 and above.
+	Timing pthread MM
+Size= 1000
+C = A*B =
+done multiplying
+real    0m1.973s
+user    0m15.212s
+sys     0m0.064s
+
+Size= 5000
+C = A*B =
+done multiplying
+real    10m26.572s
+user    82m15.020s
+sys     1m0.116s
+Size = 9k. took a long time, stopped the test.
+
+///////////////
+Neighbor:
+	Pthreads:
+1k
+A:
+B = neighbor(A) =
+Done calculating
+real    0m0.558s
+user    0m0.644s
+sys     0m3.320s
+
+5k
+A:
+B = neighbor(A) =
+Done calculating
+real    0m11.353s
+user    0m17.092s
+sys     1m4.788s
+
+9k
+B = neighbor(A) =
+Done calculating
+real    0m44.984s
+user    0m52.000s
+sys     4m30.824s
+
+10k
+B = neighbor(A) =
+Done calculating
+real    0m47.099s
+user    1m7.184s
+sys     4m32.296s
+
+20k
+B = neighbor(A) =
+Done calculating
+real    3m1.437s
+user    4m32.556s
+sys     17m17.260s
+
+30k
+B = neighbor(A) =
+Done calculating
+real    6m22.466s
+user    9m45.196s
+sys     36m26.752s
