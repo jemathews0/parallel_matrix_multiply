@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <time.h>
 
 
 /********************************************************************
@@ -83,8 +84,12 @@ void displayMatrix(int **a, int n)
 
 void writeMatrix(int **a,char *file, FILE *fp,int n)
 {
-    if ((fp = fopen(file,"w"))==NULL)
+    fp = fopen(file,"w");
+    if (fp == NULL)
+    {
         printf("error open file %s",file);
+        return;
+    }
     else
         printf("file %s opened successfully\n",file);
 
@@ -115,22 +120,22 @@ void writeMatrix(int **a,char *file, FILE *fp,int n)
 
 void multiplyMatrix(int **a,int **b,int **result,int n)
 {
-    long int sum =0,total=0;
+    //long int sum =0,total=0;
     int i,j,k;
     //iterate through rows of X
     printf("********************************\n");
     printf("Multiplying array of size: %d",n);
     for(i=0;i<n;i++)
     {
-        sum=0;
+        //sum=0;
         //iterate through columns of Y
         for(j=0;j<n;j++)
         {
-            total=0;
+            //total=0;
             //iterate through rows of Y
             for(k=0;k<n;k++)
             {
-                sum = a[i][k] * b[k][j];
+                //sum = a[i][k] * b[k][j];
                 result[i][j] += a[i][k] * b[k][j];
                 //printf("sum of %ld x %ld\t=%ld\n",a[i][k], b[k][j], sum);     //debugging
                 //total+=sum;         //to make sure values are correct
@@ -217,7 +222,7 @@ int main(int argc, char *argv[])
     }
     printf("Size of matrix: %d",atoi(argv[1]));
     int N  = atoi(argv[1]);
-    FILE *fp;
+    FILE *fp = NULL;
     char *file = "results.txt";
     //writing to file is faster than stdout
     //save matrices results here.

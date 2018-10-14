@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Wextra
 
 all: sequential pthread openmp
 
