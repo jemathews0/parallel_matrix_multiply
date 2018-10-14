@@ -13,7 +13,7 @@
 
 int SIZE = 5;
 int matrixA[5][5] = {0};
-int matrixB[5][5] = {-1};
+int matrixB[5][5] = {0};
 
 void populate();
 void neighbor();
@@ -37,7 +37,6 @@ void neighbor()
     
     int i = 0;
     int j = 0;
-    int k = 0;
     
     int temp;
     
