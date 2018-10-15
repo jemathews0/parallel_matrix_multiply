@@ -19,6 +19,13 @@ Over 50 under 150         Subtract 3 Can't go negative(0)
 
 over 150                          1
 
+////////////////////////////////////////////////////////////////////////
+To build this project, call 'make' from the root directory of the 
+project. The executables will appear in the root directory. Calling
+'make clean' will remove the executables
+////////////////////////////////////////////////////////////////////////
+
+
 
 ////////////////////////////////////////////////////////////////////////
 sequential matrix multiplication

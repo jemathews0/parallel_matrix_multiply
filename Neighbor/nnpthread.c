@@ -5,11 +5,29 @@
 // includes
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <errno.h>
-#include "neighbor_pthread.h"
+#include "matrix.h"
+#include <pthread.h>
 
+/********************************************************************
+ * Global Constants
+ *******************************************************************/
 
+#define T 8 // The number of threads to create
 
+/********************************************************************
+ * A struct to pass all information a matrix multiplication thread 
+ * needs to the thread
+ *******************************************************************/
+typedef struct
+{
+    unsigned tid; // An id so the thread knows who it is
+    Matrix* A;    // A pointer to the first operand
+    Matrix* B;    // A pointer to the second operand
+    unsigned* index; // A pointer to an index for thread synchronization
+    pthread_mutex_t* mutex; // A mutex to protect the index
+} NeighborStruct;
 /********************************************************************
  * Runs the startup code for a newly created thread.
  *******************************************************************/
@@ -146,4 +164,34 @@ Matrix* neighbor( Matrix* A)
 #endif
 
     return B;
+}
+int main()
+{
+    srand(time(0)); //Seed the random number generator
+    // create a matrix, A, mxn
+    const unsigned int m = 4;
+    const unsigned int n = 3;
+
+    Matrix* A = matrixCreate(m,n);
+    Matrix* B;
+
+    // initialize the matrix A
+    matrixRandomizeInt(A, 11);
+
+    // print the operands
+    printf("A:\n");
+    matrixPrint(A);
+
+    // run the neighbor algorithm on A
+    B = neighbor(A);
+
+    // print the result
+    printf("B = neighbor(A) = \n");
+    matrixPrint(B);
+
+    // free the matrices
+    matrixFree(A);
+    matrixFree(B);
+
+    return 0;
 }

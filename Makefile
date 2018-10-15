@@ -1,27 +1,27 @@
 CFLAGS = -Wall -Wextra
 
-all: mmult_sequential mmult_pthread mmult_openmp nn_sequential nn_pthread nn_openmp
+all: mmseq mmpthread mmomp nnseq nnpthread nnomp
 
 debug: CFLAGS += -DDEBUG -g
 debug: all
 
-mmult_sequential : mmult_sequential.c
-	gcc $(CFLAGS) -o mmult_sequential mmult_sequential.c
+mmseq : 
+	gcc $(CFLAGS) -o mmseq MatMul/mmseq.c
 	
-mmult_pthread : test_mmult_pthread.c
-	gcc $(CFLAGS) -o mmult_pthread test_mmult_pthread.c matrix.c multiply_pthread.c -lpthread
+mmpthread :
+	gcc $(CFLAGS) -o mmpthread MatMul/mmpthread.c MatMul/matrix.c -lpthread
 
-mmult_openmp : mmult_openmp.c
-	gcc $(CFLAGS) -o mmult_openmp mmult_openmp.c -fopenmp
+mmomp : 
+	gcc $(CFLAGS) -o mmomp MatMul/mmomp.c -fopenmp
 
-nn_sequential : nnseq.c
-	gcc $(CFLAGS) -o nn_sequential nnseq.c
+nnseq :
+	gcc $(CFLAGS) -o nnseq Neighbor/nnseq.c
 	
-nn_pthread : test_neighbor_pthread.c
-	gcc $(CFLAGS) -o nn_pthread test_neighbor_pthread.c matrix.c neighbor_pthread.c -lpthread
+nnpthread : 
+	gcc $(CFLAGS) -o nnpthread Neighbor/nnpthread.c Neighbor/matrix.c -lpthread
 	
-nn_openmp : nn_openmp.c
-	gcc $(CFLAGS) -o nn_openmp nn_openmp.c -fopenmp
+nnomp : 
+	gcc $(CFLAGS) -o nnomp Neighbor/nnomp.c -fopenmp
 
 clean : 
-	rm mmult_sequential mmult_pthread mmult_openmp nn_sequential nn_pthread nn_openmp
+	rm mmseq mmpthread mmomp nnseq nnpthread nnomp
