@@ -143,3 +143,61 @@ Done calculating
 real    6m22.466s
 user    9m45.196s
 sys     36m26.752s
+
+Member: Jonathan Mathews
+
+Pthreads matrix multiplication and neighbor writeup:
+
+I implemented the pthreads version of matrix multiplication and the
+neighbor problem. I started implementing the matrix multiplication on
+statically defined matrices, but didn't like that approach because it
+didn't feel modular and useful to the rest of the team. I therefore
+switched to creating a modular, general purpose, library with support
+for rectangular, dynamically-allocated matrices. The idea was that the
+library could be used by those developing the sequential and openmp
+implementations to keep everything consistent. Each implementation would
+only have to re-create the matrixMultiply function.
+
+Concerning the parallel implementation, my goal of modularity required
+that global variables be used sparingly, so the only global variable is
+the number of threads. Everything else is allocated as necessary and
+passed around in a struct. The conceptual approach to parallelization
+was to split the matrix multiplication into N tasks, one for each
+element of the output array. We then create T threads. There is a shared
+index that is protected by a mutex. Each thread locks the mutex, grabs
+the index, increments it, and then unlocks the mutex. It then calculates
+the value of the output array corresponding to that index. In this way,
+N tasks are split among T threads without a lot of synchronization.
+
+Surprisingly, almost all of the code for the pthreads version of matrix
+multiplication could be reused for the neighbor problem. The approach to
+parallelization is virtually identical with a shared index that
+increments through the output array as each thread calculates one
+element of the output at a time. The matrix library was also reused. The
+only modifications were to the struct used to pass variables to/from the
+threads and to the logic used inside of the thread function. Again, N
+tasks are split among T threads.
+
+It was difficult to collaborate effectively on algorithm design, program
+structure, testing, etc. without physically talking to each other. 
+
+
+Lessons learned: 
+This was my first time collaborating on a project with people I had
+never met before. I think the biggest challenge was coordination. We
+tried to use GitHub to keep track of everyone's changes, which actually
+worked pretty well once everyone figured it out. There were some
+additional delays in trying to figure this out though. I have
+collaborated on projects at work before, but that's easier because it's
+clear who is in charge and who is doing which tasks and what the
+paradigm for using git is. We had to figure all that out ourselves on
+this project which was a great learning experience. I think if I were to
+try a project with this group again it would turn out much better. It
+was also an interesting experience getting to know people almost
+strictly through their code and interaction on slack. I like this group
+and have also learned some things from their code and comments. It was
+fun.
+
+Testing:
+I only tested to ensure correctness.
+
