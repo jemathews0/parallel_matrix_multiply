@@ -1,6 +1,6 @@
 CFLAGS = -Wall -Wextra
 
-all: mmult_sequential mmult_pthread mmult_openmp nn_sequential nn_pthread
+all: mmult_sequential mmult_pthread mmult_openmp nn_sequential nn_pthread nn_openmp
 
 debug: CFLAGS += -DDEBUG -g
 debug: all
