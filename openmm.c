@@ -4,32 +4,113 @@
 
 #define N 200
 
-multiply (int A[][N], int B[][N], int C[][N], int r1, int c1, int r2, int c2)
+multiply3 (int A[][N], int B[][N], int C[][N], int r1, int c1, int r2, int c2)
 {
-	//#pragma omp parallel 
+    // allow parallel sections to have nested parallel sections. If you
+    // don't have this, then the for loop on k will only have 1 thread
+    #pragma omp parallel
+	#pragma omp for collapse(2)
+	for (int i = 0; i < r1; ++i)
 	{
-	int i, j, k;
-	int result = 0;
-	int sum = 0;
-	#pragma omp parallel for collapse(2) private(result, k)
-	for (i = 0; i < r1; ++i)
-	{
-        //#pragma omp for
-		for (j = 0; j < c2; ++j)
+        // placing any code here will break the 'omp for collapse(2)' call
+		for (int j = 0; j < c2; ++j)
 		{
-            result = 0;
-			//#pragma omp parallel for reduction(+:result) schedule(dynamic)
-			for (k = 0; k < r2; ++k)
+            // initia
+            int result = 0;
+            // get the thread number for the outer parallel section
+            int outer_ID = omp_get_thread_num();
+
+            // loop over r2 elements with a single thread
+			for (int k = 0; k < r2; ++k)
 			{
-                int ID = omp_get_thread_num();
+                // get the thread number for the inner parallel section
+                int inner_ID = omp_get_thread_num();
 				result = result + A[i][k]*B[k][j];
-                printf("Thread: %d i: %d j: %d k: %d\n", ID, i, j, k);
+
+                // output for debugging
+                printf("Outer: %d Inner: %d i: %d j: %d k: %d\n", outer_ID, inner_ID, i, j, k);
 			}
 
 			C[i][j] = result;
-			result = 0;
+			//result = 0;
 		}
+        // placing any code here will break the 'omp for collapse(2)' call
 	}
+}
+multiply2 (int A[][N], int B[][N], int C[][N], int r1, int c1, int r2, int c2)
+{
+    // allow parallel sections to have nested parallel sections. If you
+    // don't have this, then the for loop on k will only have 1 thread
+    omp_set_nested(1);
+	#pragma omp parallel for collapse(2)
+	for (int i = 0; i < r1; ++i)
+	{
+        // placing any code here will break the 'omp for collapse(2)' call
+		for (int j = 0; j < c2; ++j)
+		{
+            // initia
+            int result = 0;
+            // get the thread number for the outer parallel section
+            int outer_ID = omp_get_thread_num();
+
+            // create a nested parallel section to handle the summing
+			#pragma omp parallel for reduction(+:result)
+			for (int k = 0; k < r2; ++k)
+			{
+                // get the thread number for the inner parallel section
+                int inner_ID = omp_get_thread_num();
+				result = result + A[i][k]*B[k][j];
+
+                // output for debugging
+                printf("Outer: %d Inner: %d i: %d j: %d k: %d\n", outer_ID, inner_ID, i, j, k);
+			}
+
+			C[i][j] = result;
+			//result = 0;
+		}
+        // placing any code here will break the 'omp for collapse(2)' call
+	}
+}
+multiply (int A[][N], int B[][N], int C[][N], int r1, int c1, int r2, int c2)
+{
+    // allow parallel sections to have nested parallel sections. If you
+    // don't have this, then the for loop on k will only have 1 thread
+    omp_set_nested(1);
+	int i, j, k;
+	int result = 0;
+	int sum = 0;
+    // parallelize two nested for loops, creating r1*c2 threads in a team
+    // For collapse to work, the loops must be perfectly nested with nothing
+    // between them.
+    // We also must declare result and k as private. Alternatively, we 
+    // could just declare them inside of the second loop.
+	#pragma omp parallel for collapse(2) private(result, k)
+	for (i = 0; i < r1; ++i)
+	{
+        // placing any code here will break the 'omp for collapse(2)' call
+		for (j = 0; j < c2; ++j)
+		{
+            // initia
+            result = 0;
+            // get the thread number for the outer parallel section
+            int outer_ID = omp_get_thread_num();
+
+            // create a nested parallel section to handle the summing
+			#pragma omp parallel for reduction(+:result)
+			for (k = 0; k < r2; ++k)
+			{
+                // get the thread number for the inner parallel section
+                int inner_ID = omp_get_thread_num();
+				result = result + A[i][k]*B[k][j];
+
+                // output for debugging
+                printf("Outer: %d Inner: %d i: %d j: %d k: %d\n", outer_ID, inner_ID, i, j, k);
+			}
+
+			C[i][j] = result;
+			//result = 0;
+		}
+        // placing any code here will break the 'omp for collapse(2)' call
 	}
 }
 
@@ -95,7 +176,7 @@ int main()
 			printf("\n");
 		}
 
-		multiply(A, B, C, r1, c1, r2, c2);
+		multiply3(A, B, C, r1, c1, r2, c2);
 		printMatrix(C, r1, c2);
 	}
 
