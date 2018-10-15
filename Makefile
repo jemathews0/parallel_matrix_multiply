@@ -11,8 +11,8 @@ mmult_sequential : mmult_sequential.c
 mmult_pthread : test_mmult_pthread.c
 	gcc $(CFLAGS) -o mmult_pthread test_mmult_pthread.c matrix.c multiply_pthread.c -lpthread
 
-mmult_openmp : mmult_openmp.c
-	gcc $(CFLAGS) -o mmult_openmp mmult_openmp.c -fopenmp
+mmult_openmp : openmm.c
+	gcc $(CFLAGS) -o mmult_openmp openmm.c matrix.c multiply_openmp.c -fopenmp
 
 nn_sequential : nnseq.c
 	gcc $(CFLAGS) -o nn_sequential nnseq.c

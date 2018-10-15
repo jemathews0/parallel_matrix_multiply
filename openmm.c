@@ -6,20 +6,24 @@
 
 multiply (int A[][N], int B[][N], int C[][N], int r1, int c1, int r2, int c2)
 {
-	#pragma omp parallel
+	//#pragma omp parallel 
 	{
 	int i, j, k;
 	int result = 0;
 	int sum = 0;
-	#pragma omp for
+	#pragma omp parallel for collapse(2) private(result, k)
 	for (i = 0; i < r1; ++i)
 	{
+        //#pragma omp for
 		for (j = 0; j < c2; ++j)
 		{
+            result = 0;
 			//#pragma omp parallel for reduction(+:result) schedule(dynamic)
 			for (k = 0; k < r2; ++k)
 			{
+                int ID = omp_get_thread_num();
 				result = result + A[i][k]*B[k][j];
+                printf("Thread: %d i: %d j: %d k: %d\n", ID, i, j, k);
 			}
 
 			C[i][j] = result;
