@@ -1,8 +1,8 @@
-//Group 6 Neighbors Openmp
 #include <stdio.h>
+#include <omp.h>
 #include <stdlib.h>
 #include <time.h>
-#include <omp.h>
+
 
 int SIZE = 5;
 int matrixA[5][5] = {0};
@@ -10,7 +10,6 @@ int matrixB[5][5] = {0};
 
 void populate();
 void neighbor();
-
 
 void populate()
 {
@@ -21,23 +20,21 @@ void populate()
         for(j=0; j<SIZE; ++j){
             matrixA[i][j] = rand() % 5;
         }
-    }
+
+     }
 }
 
-//may be broken up later, but for now just figuring out how not to break the math.
 void neighbor()
 {
-    
-	
+    #pragma omp parallel num_threads(6)
+     {	    
     int i = 0;
     int j = 0;
     
     int temp;
     
     //perform neighbor calculations
-	
-	#pragma omp parallel num_threads(6)
-	{
+     #pragma omp for
     for(i=0;i<SIZE;++i){
         for(j=0; j<SIZE; ++j){
             //reset temp
@@ -50,7 +47,7 @@ void neighbor()
                 temp = temp+matrixA[i-1][j];
             }
             //bottom
-            if (i+1<SIZE) {
+            if (i+1<=SIZE) {
                 temp = temp+matrixA[i+1][j];
             }
             //left
@@ -58,11 +55,11 @@ void neighbor()
                 temp = temp+matrixA[i][j-1];
             }
             //right
-            if (j+1<SIZE) {
+            if (j+1<=SIZE) {
                 temp = temp+matrixA[i][j+1];
             }
             //diagTopR
-            if ((i-1>=0)&&(j+1<SIZE)) {
+            if ((i-1>=0)&&(j+1<=SIZE)) {
                 temp = temp+matrixA[i-1][j+1];
             }
             //diagTopL
@@ -70,15 +67,15 @@ void neighbor()
                 temp = temp+matrixA[i-1][j-1];
             }
             //diagBottomR
-            if ((i+1<SIZE)&&(j+1<SIZE)) {
+            if ((i+1<=SIZE)&&(j+1<=SIZE)) {
                 temp = temp+matrixA[i+1][j+1];
             }
             //diagBottomL
-            if ((i+1<SIZE)&&(j-1>=0)) {
+            if ((i+1<=SIZE)&&(j-1>=0)) {
                 temp = temp+matrixA[i+1][j-1];
             }
 //debug print
-//printf("%d\n", temp);
+
             
             //makes sure the rest of the conditions are skipped if a match is made.
             int flag = -1;
@@ -105,13 +102,13 @@ void neighbor()
             }
         }
     }
-	}
+}
     
     
     
     //print matrixA
-	
-	
+   int i = 0;
+   int j = 0;
     printf("Matrix A\n");
     for(i=0;i<SIZE;++i){
         for(j=0; j<SIZE; ++j){
@@ -130,21 +127,15 @@ void neighbor()
         }
         printf("\n");
     }
-	
-	
 }
-
-
-
-
-int main()
+ int main()
 {
- 
+    
     //populate arrays.
     populate();
     
     //perform matrix neighbor math.
     neighbor();
-
-    return 0;
+   
+  return 0;
 }
