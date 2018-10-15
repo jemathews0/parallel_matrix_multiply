@@ -19,6 +19,9 @@ nn_sequential : nnseq.c
 	
 nn_pthread : test_neighbor_pthread.c
 	gcc $(CFLAGS) -o nn_pthread test_neighbor_pthread.c matrix.c neighbor_pthread.c -lpthread
+	
+nn_openmp : nn_openmp.c
+	gcc $(CFLAGS) -o nn_openmp nn_openmp.c -fopenmp
 
 clean : 
-	rm mmult_sequential mmult_pthread mmult_openmp nn_sequential nn_pthread
+	rm mmult_sequential mmult_pthread mmult_openmp nn_sequential nn_pthread nn_openmp
