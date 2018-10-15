@@ -27,15 +27,17 @@ void populate()
 //may be broken up later, but for now just figuring out how not to break the math.
 void neighbor()
 {
-    #pragma omp parallel num_threads(6)
-	{
+    
+	
     int i = 0;
     int j = 0;
     
     int temp;
     
     //perform neighbor calculations
-	#pragma omp for
+	
+	#pragma omp parallel num_threads(6)
+	{
     for(i=0;i<SIZE;++i){
         for(j=0; j<SIZE; ++j){
             //reset temp
@@ -103,10 +105,13 @@ void neighbor()
             }
         }
     }
-    }
+	}
+    
     
     
     //print matrixA
+	
+	
     printf("Matrix A\n");
     for(i=0;i<SIZE;++i){
         for(j=0; j<SIZE; ++j){
@@ -125,6 +130,7 @@ void neighbor()
         }
         printf("\n");
     }
+	
 	
 }
 
