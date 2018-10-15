@@ -10,13 +10,21 @@
 #include "matrix.h"
 #include "multiply_pthread.h"
 
-int main()
+int main( int argc, char* argv[])
 {
     srand(time(0)); //Seed the random number generator
     // create a matrix, A, mxn
-    const unsigned int m = 4;
-    const unsigned int n = 3;
-    const unsigned int p = 2;
+
+    if( argc != 4 )
+    {
+        printf("Multiplies an M by N matrix, A, by an N by P matrix B.\
+                usage: mmult_pthread M N P\n");
+        return 1;
+    }
+    const unsigned int m = atoi(argv[1]);
+    const unsigned int n = atoi(argv[2]);
+    const unsigned int p = atoi(argv[3]);
+
 
     Matrix* A = matrixCreate(m,n);
     Matrix* B = matrixCreate(n,p);
