@@ -103,7 +103,7 @@ void neighbor()
             }
         }
     }
-    
+    }
     
     
     //print matrixA
@@ -125,7 +125,7 @@ void neighbor()
         }
         printf("\n");
     }
-	}
+	
 }
 
 
