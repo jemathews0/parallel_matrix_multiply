@@ -4,8 +4,8 @@
 #include <pthread.h>
 
 #define NUMT 5
-#define ROWS 5
-#define COLS 5
+#define ROWS 200
+#define COLS 200
 
 pthread_mutex_t lock;
 pthread_barrier_t barr;
@@ -20,68 +20,72 @@ void *start (void* param)
 
 	while(G < ROWS)
 	{
-		if (myid == 0)
+		if (myid % 5 == 0)
 		{
 			int i, j = 0;
-			for (int i = 0; i < ROWS; ++j)
+			for (i = 0; i <= ROWS; i=i+5)
 			{
-				A[i][j] = rand() % 20 + 1;
+				for (j = 0; j < COLS; ++j)
+					A[i][j] = rand() % 20 + 1;
 			}
 			pthread_mutex_lock (&lock);
 			++G;
 			pthread_mutex_unlock (&lock);
 		}
-
-		else if (myid == 1)
+		else if (myid % 5 == 1)
 		{
 			int i, j = 0;
-			for (int i = 1; i < ROWS; ++j)
+			for (i = 1; i <= ROWS; i=i+5)
 			{
-				A[i][j] = rand() % 20 + 1;
+				for (j = 0; j < COLS; ++j)
+					A[i][j] = rand() % 20 + 1;
 			}
 			pthread_mutex_lock (&lock);
 			++G;
 			pthread_mutex_unlock (&lock);
-
 		}
-		else if (myid == 2)
+		else if (myid % 5 == 2)
 		{
 			int i, j = 0;
-			for (int i = 2; i < ROWS; ++j)
+			for (i = 2; i <= ROWS; i=i+5)
 			{
-				A[i][j] = rand() % 20 + 1;
+				for (j = 0; j < COLS; ++j)
+					A[i][j] = rand() % 20 + 1;
 			}
 			pthread_mutex_lock (&lock);
 			++G;
 			pthread_mutex_unlock (&lock);
-
-
 		}
-		else if (myid == 3)
+		else if (myid % 5 == 3)
 		{
 			int i, j = 0;
-			for (int i = 3; i < ROWS; ++j)
+			for (i = 3; i <= ROWS; i=i+5)
 			{
-				A[i][j] = rand() % 20 + 1;
+				for (j = 0; j < COLS; ++j)
+				{
+					A[i][j] = rand() % 20 + 1;
+				}
 			}
 			pthread_mutex_lock (&lock);
 			++G;
 			pthread_mutex_unlock (&lock);
-
 		}
 		else
 		{
 			int i, j = 0;
-			for (int i = 4; i < ROWS; ++j)
+			for (i = 4; i < ROWS; i=i+5)
 			{
-				A[i][j] = rand() % 20 + 1;
+				for (j = 0; j < COLS; ++j)
+				{
+					A[i][j] = rand() % 20 + 1;
+				}
 			}
 			pthread_mutex_lock (&lock);
 			++G;
 			pthread_mutex_unlock (&lock);
-
 		}
-		pthread_barrier_wait (&barr);
+		pthread_exit ((void*) myid);
+		//pthread_barrier_wait (&barr);
 	}
 }
 
@@ -110,13 +114,13 @@ int main()
 
 	for (i = 0; i < NUMT; ++i)
 	{
-		printf("Creating %ld\n", i);
+		//printf("Creating %ld\n", i);
 		pthread_create (&tid[i], NULL, start, (void *)i);
 	}
 
-	print(A);
+	//print(A);
 
-	printf("\n");
+	//printf("\n");
 	for (int i = 1; i < ROWS-1; ++i)
 	{
 		for (int j = 1; j < COLS-1; ++j)
@@ -134,10 +138,10 @@ int main()
 			}
 			else
 				B[i][j] = 1;
-			printf("%d\t", B[i][j]);
+			//printf("%d\t", B[i][j]);
 
 		}
-		printf("\n");
+		//printf("\n");
 	}
 
 	return 0;
